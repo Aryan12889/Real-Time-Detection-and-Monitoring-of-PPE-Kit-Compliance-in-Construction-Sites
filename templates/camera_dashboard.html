@@ -1,0 +1,314 @@
+<html>
+
+<head>
+    <title>PPE Kit Detection Dashboard</title>
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" src="style.css" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 34px;
+            height: 20px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: #2196F3;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(14px);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 ">
+    <div class="w-full h-17 flex bg-gray-400 text-black p-5 ml-5 rounded-lg">
+        <ul class="flex space-x-5">
+            <li class="hover:bg-black hover:text-white p-2 rounded-lg group">
+                <a class="flex items-center" href="dashboard.html">
+                    <i class="fas fa-tachometer-alt mr-3"></i>
+                    <span
+                        class="absolute left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-s bg-black text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                        Dashboard
+                    </span>
+                </a>
+            </li>
+            <li class="hover:bg-black hover:text-white p-2 rounded-lg group">
+                <a class="flex items-center" href="employee_config.html">
+                    <i class="fas fa-users mr-3"></i>
+                    <span
+                        class="absolute left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-s bg-black text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                        Employee Configuration
+                    </span>
+                </a>
+            </li>
+            <li class="hover:bg-black hover:text-white p-2 rounded-lg group">
+                <a class="flex items-center" href="camera_management.html">
+                    <i class="fas fa-video mr-3"></i>
+                    <span
+                        class="absolute left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-s bg-black text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                        Camera Management
+                    </span>
+                </a>
+            </li>
+            <li class="hover:bg-black hover:text-white p-2 rounded-lg group">
+                <a class="flex items-center" href="camera_dashboard.html">
+                    <i class="fas fa-camera mr-3"></i>
+                    <span
+                        class="absolute left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-s bg-black text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                        Camera Dashboard
+                    </span>
+                </a>
+            </li>
+            <li class="hover:bg-black hover:text-white p-2 rounded-lg group">
+                <a class="flex items-center" href="notifications.html">
+                    <i class="fas fa-bell mr-3"></i>
+                    <span
+                        class="absolute left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-s bg-black text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                        Notifications
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="flex-grow bg-white p-5 rounded-lg ml-5" id="content">
+        <div class="flex justify-between items-center bg-gray-400 text-black p-3 rounded-lg">
+            <h1 class="text-xl" id="header-title">
+                Camera Dashboard
+            </h1>
+            <div class="flex items-center">
+                <span>
+                    Super Admin
+                </span>
+                <img alt="User profile picture" class="ml-3 rounded-full w-10 h-10" src="https://placehold.co/40x40"
+                    onclick="showEmployeeConfigurations()" />
+            </div>
+        </div>
+
+        <!-- Dynamic Main Content -->
+        <div id="main-content" class="mt-5">
+            <!-- Dashboard View -->
+            <div id="dashboard-view" class="flex justify-between">
+                <!-- Left: Grid -->
+                <div class="w-3/4 bg-white p-5 rounded-lg shadow-lg">
+                    <h2 class="text-lg mb-2">
+                        Camera Name
+                    </h2>
+                    <button class="mb-4 text-blue-500 underline text-sm" onclick="fetchCameras()">Refresh List</button>
+                    <p class="text-sm text-gray-600 mb-5">
+                        Select a camera and the necessary models and then click on 'MAP' to map the camera with the
+                        model(s).
+                    </p>
+
+                    <div id="cameraGrid" class="grid grid-cols-2 gap-4">
+                        <!-- Dynamic Items -->
+                    </div>
+                </div>
+
+                <!-- Right: Models -->
+                <div class="w-1/4 bg-white p-5 rounded-lg shadow-lg ml-4">
+                    <h2 class="text-lg mb-5">
+                        Camera Model
+                    </h2>
+                    <div class="flex justify-between items-center mb-3">
+                        <span>PPE DETECTION MODEL</span>
+                        <label class="switch">
+                            <input type="checkbox" id="ppeModel">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span>FIRE HAZARD MODEL</span>
+                        <label class="switch">
+                            <input type="checkbox" id="fireModel">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+
+                    <button class="bg-green-500 text-white py-2 px-4 rounded-lg mt-5" onclick="mapModels()">
+                        Map
+                    </button>
+                </div>
+            </div>
+
+            <!-- Detailed View (Hidden by default) -->
+            <div id="detailed-view" class="hidden w-full bg-white p-5 rounded-lg shadow-lg">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg" id="detailTitle">Camera Dashboard</h2>
+                    <button class="text-blue-500 underline" onclick="showDashboardView()">Back to List</button>
+                </div>
+                <p class="text-sm text-gray-600 mb-5">Displaying active models.</p>
+                <div id="videoContainer" class="mt-4">
+                    <!-- Video content injected here -->
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-5 text-sm text-gray-600">
+            <p>
+                Copyright ©2025
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let currentCameras = [];
+        let selectedCameraId = null;
+
+        document.addEventListener('DOMContentLoaded', fetchCameras);
+
+        async function fetchCameras() {
+            try {
+                const response = await fetch('/api/cameras');
+                currentCameras = await response.json();
+                renderGrid(currentCameras);
+            } catch (error) {
+                console.error('Error fetching cameras:', error);
+            }
+        }
+
+        function renderGrid(cameras) {
+            const grid = document.getElementById('cameraGrid');
+            grid.innerHTML = '';
+
+            cameras.forEach(cam => {
+                const div = document.createElement('div');
+                div.className = "flex items-center bg-gray-100 p-3 rounded-lg cursor-pointer border-2 border-transparent camera-item";
+                div.onclick = () => selectCamera(div, cam.id);
+                // Highlight if previously selected
+                if (selectedCameraId === cam.id) {
+                    div.classList.add('border-blue-500', 'bg-blue-100');
+                }
+
+                div.innerHTML = `
+                    <i class="fas fa-video text-2xl mr-3"></i>
+                    <div>
+                        <h3 class="text-md">${cam.name}</h3>
+                        <p class="text-sm text-gray-600">(${cam.id}: ${cam.ip})</p>
+                    </div>
+                `;
+                grid.appendChild(div);
+            });
+        }
+
+        function selectCamera(element, id) {
+            var cameraItems = document.querySelectorAll('.camera-item');
+            cameraItems.forEach(function (item) {
+                item.classList.remove('border-blue-500', 'bg-blue-100');
+            });
+            element.classList.add('border-blue-500', 'bg-blue-100');
+            selectedCameraId = id;
+        }
+
+        function mapModels() {
+            if (!selectedCameraId) {
+                alert('Please select a camera first.');
+                return;
+            }
+
+            var ppeModel = document.getElementById('ppeModel').checked;
+            var fireModel = document.getElementById('fireModel').checked;
+
+            // Mandatory selection Logic
+            if (!ppeModel && !fireModel) {
+                alert('Please select at least one model.');
+                return;
+            }
+
+            const cam = currentCameras.find(c => c.id === selectedCameraId);
+            showDetailedView(cam, ppeModel, fireModel);
+        }
+
+        function showDetailedView(cam, ppe, fire) {
+            document.getElementById('dashboard-view').classList.add('hidden');
+            document.getElementById('detailed-view').classList.remove('hidden');
+
+            document.getElementById('detailTitle').innerText = `Camera Dashboard - ${cam.name}`;
+
+            const container = document.getElementById('videoContainer');
+            let videoHTML = '';
+
+            const ppeSrc = "/static/videos/ppe.mp4";
+            const fireSrc = "/static/videos/fire.mp4";
+
+            if (ppe && fire) {
+                videoHTML = `
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <h3 class="font-bold mb-2">PPE Detection</h3>
+                            <video src="${ppeSrc}" controls autoplay loop class="w-full border"></video>
+                        </div>
+                        <div>
+                            <h3 class="font-bold mb-2">Fire Detection</h3>
+                            <video src="${fireSrc}" controls autoplay loop class="w-full border"></video>
+                        </div>
+                    </div>
+                `;
+            } else if (ppe) {
+                videoHTML = `
+                    <div>
+                        <h3 class="font-bold mb-2">PPE Detection</h3>
+                        <video src="${ppeSrc}" controls autoplay loop class="w-full border"></video>
+                    </div>
+                `;
+            } else if (fire) {
+                videoHTML = `
+                    <div>
+                        <h3 class="font-bold mb-2">Fire Detection</h3>
+                        <video src="${fireSrc}" controls autoplay loop class="w-full border"></video>
+                    </div>
+                `;
+            }
+            container.innerHTML = videoHTML;
+        }
+
+        function showDashboardView() {
+            document.getElementById('detailed-view').classList.add('hidden');
+            document.getElementById('dashboard-view').classList.remove('hidden');
+
+            // Stop videos to save resources
+            document.getElementById('videoContainer').innerHTML = '';
+
+            // State of toggles and selection is already preserved in HTML/JS variables
+        }
+    </script>
+</body>
+
+</html>

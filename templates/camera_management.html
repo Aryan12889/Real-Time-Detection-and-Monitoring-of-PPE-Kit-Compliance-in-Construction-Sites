@@ -1,0 +1,454 @@
+<html>
+
+<head>
+    <title>PPE Kit Detection Dashboard</title>
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" src="style.css" />
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 34px;
+            height: 20px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked+.slider {
+            background-color: #2196F3;
+        }
+
+        input:checked+.slider:before {
+            transform: translateX(14px);
+        }
+
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #60A5FA;
+        }
+
+        .toggle-checkbox:checked+.toggle-label {
+            background-color: #60A5FA;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 ">
+    <div class="w-full h-17 flex bg-gray-400 text-black p-5 ml-5 rounded-lg">
+        <!-- <img alt="EFRAME Logo" class="w-full h-auto mb-5 rounded-lg" src="eframe-logo.png"> -->
+        <ul class="flex space-x-5">
+            <li class="hover:bg-black hover:text-white p-2 rounded-lg group">
+                <a class="flex items-center" href="dashboard.html">
+                    <i class="fas fa-tachometer-alt mr-3"></i>
+                    <span
+                        class="absolute left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-s bg-black text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                        Dashboard
+                    </span>
+                </a>
+            </li>
+            <li class="hover:bg-black hover:text-white p-2 rounded-lg group">
+                <a class="flex items-center" href="employee_config.html">
+                    <i class="fas fa-users mr-3"></i>
+                    <span
+                        class="absolute left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-s bg-black text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                        Employee Configuration
+                    </span>
+                </a>
+            </li>
+            <li class="hover:bg-black hover:text-white p-2 rounded-lg group">
+                <a class="flex items-center" href="camera_management.html">
+                    <i class="fas fa-video mr-3"></i>
+                    <span
+                        class="absolute left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-s bg-black text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                        Camera Management
+                    </span>
+                </a>
+            </li>
+            <li class="hover:bg-black hover:text-white p-2 rounded-lg group">
+                <a class="flex items-center" href="camera_dashboard.html">
+                    <i class="fas fa-camera mr-3"></i>
+                    <span
+                        class="absolute left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-s bg-black text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                        Camera Dashboard
+                    </span>
+                </a>
+            </li>
+            <li class="hover:bg-black hover:text-white p-2 rounded-lg group">
+                <a class="flex items-center" href="notifications.html">
+                    <i class="fas fa-bell mr-3"></i>
+                    <span
+                        class="absolute left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-s bg-black text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                        Notifications
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="flex-grow bg-white p-5 rounded-lg ml-5" id="content">
+        <div class="flex justify-between items-center bg-gray-400 text-black p-3 rounded-lg">
+            <h1 class="text-xl" id="header-title">
+                Camera Management
+            </h1>
+            <div class="flex items-center">
+                <span>
+                    Super Admin
+                </span>
+                <a href="profile.html">
+                    <img alt="User profile picture" class="ml-3 rounded-full w-10 h-10"
+                        src="https://placehold.co/40x40" />
+                </a>
+            </div>
+        </div>
+        <div class="flex justify-between mt-5" id="main-content">
+            <div class="w-full bg-white p-5 rounded-lg shadow-lg">
+                <div class="flex justify-between items-center mb-4">
+                    <div class="flex space-x-2">
+                        <button class="bg-green-500 text-white px-4 py-2 rounded" onclick="openModal('add')">
+                            + ADD NEW
+                        </button>
+                        <button class="bg-red-500 text-white px-4 py-2 rounded" onclick="deleteCheckedCameras()">
+                            Delete
+                        </button>
+                    </div>
+                    <div>
+                        <label class="mr-2" for="entries">
+                            Show
+                        </label>
+                        <select class="border rounded px-2 py-1" id="entries">
+                            <option>10</option>
+                            <option>25</option>
+                            <option>50</option>
+                            <option>100</option>
+                        </select>
+                        <span class="ml-2">
+                            entries
+                        </span>
+                    </div>
+                </div>
+                <table class="w-full text-left border-collapse" id="cameraTable">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="p-2">
+                                <input type="checkbox" id="selectAll" />
+                            </th>
+                            <th class="p-2">Camera Name</th>
+                            <th class="p-2">Camera Ip</th>
+                            <th class="p-2">RTSP URL</th>
+                            <th class="p-2">Playback URL</th>
+                            <th class="p-2">Zone</th>
+                            <!-- <th class="p-2">Status</th> -->
+                            <th class="p-2">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dynamic Content -->
+                    </tbody>
+                </table>
+                <div class="flex justify-between items-center mt-4">
+                    <span id="showingText">
+                        Showing 0 items
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-5 text-sm text-gray-600">
+            <p>
+                Copyright ©2025
+            </p>
+        </div>
+    </div>
+
+    <!-- Add/Edit Modal -->
+    <div id="cameraModal"
+        class="modal fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden flex justify-center items-center z-50">
+        <div class="bg-white p-5 rounded-lg shadow-lg w-96 relative">
+            <h2 id="modalTitle" class="text-xl font-bold mb-4">Add New Camera</h2>
+
+            <button id="unlockBtn" class="hidden absolute top-5 right-5 text-blue-500 hover:text-blue-700"
+                onclick="toggleEditMode()">
+                <i class="fas fa-lock"></i> Enable Editing
+            </button>
+
+            <form id="cameraForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium">Camera Name</label>
+                    <input type="text" id="cameraName" class="border rounded w-full p-2" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium">Camera IP</label>
+                    <input type="text" id="cameraIp" class="border rounded w-full p-2" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium">Zone</label>
+                    <input type="text" id="cameraZone" class="border rounded w-full p-2" required>
+                </div>
+                <!-- Logic for auto-generating URLs is handled in backend, not shown here to keep UI clean 
+                     or we could show them as read-only -->
+
+                <button type="submit" id="saveCameraBtn"
+                    class="bg-green-500 text-white py-2 px-4 rounded-lg">Save</button>
+                <button type="button" class="bg-red-500 text-white py-2 px-4 rounded-lg mt-2"
+                    onclick="closeModal()">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = '/api/cameras';
+        let isEditMode = false;
+        let currentEditId = null;
+
+        document.addEventListener('DOMContentLoaded', fetchCameras);
+        document.getElementById('selectAll').addEventListener('change', function (e) {
+            const checkboxes = document.querySelectorAll('.camera-checkbox');
+            checkboxes.forEach(cb => cb.checked = e.target.checked);
+        });
+
+        async function fetchCameras() {
+            try {
+                const response = await fetch(API_URL);
+                const cameras = await response.json();
+                renderTable(cameras);
+            } catch (error) {
+                console.error('Error fetching cameras:', error);
+            }
+        }
+
+        function renderTable(cameras) {
+            const tbody = document.querySelector('#cameraTable tbody');
+            tbody.innerHTML = '';
+
+            cameras.forEach(cam => {
+                const row = tbody.insertRow();
+                row.classList.add('border-b');
+                row.innerHTML = `
+                <td class="p-2"><input type="checkbox" class="camera-checkbox" value="${cam.id}"/></td>
+                <td class="p-2">${cam.name}</td>
+                <td class="p-2">${cam.ip}</td>
+                <td class="p-2 truncate max-w-xs">${cam.rtsp_url}</td>
+                <td class="p-2 truncate max-w-xs">${cam.playback_url}</td>
+                <td class="p-2">${cam.zone}</td>
+                <td class="p-2 flex space-x-2">
+                    <button class="text-yellow-500 hover:text-yellow-700" onclick='openEditModal(${JSON.stringify(cam)})'>
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="text-red-500 hover:text-red-700" onclick="confirmDelete(${cam.id})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+            });
+
+            document.getElementById('showingText').innerText = `Showing ${cameras.length} items`;
+        }
+
+        // Modal Functions
+        const modal = document.getElementById('cameraModal');
+        const title = document.getElementById('modalTitle');
+        const unlockBtn = document.getElementById('unlockBtn');
+        const saveBtn = document.getElementById('saveCameraBtn');
+
+        function openAddModal() {
+            isEditMode = false;
+            currentEditId = null;
+            title.innerText = "Add New Camera";
+
+            // Reset fields
+            document.getElementById('cameraName').value = "New Zone";
+            document.getElementById('cameraIp').value = "192.168.0.x";
+            document.getElementById('cameraZone').value = "";
+
+            // "Add" mode: always editable, no unlock button needed
+            setInputsEditable(true);
+            unlockBtn.classList.add('hidden');
+            saveBtn.disabled = false;
+            saveBtn.classList.remove('bg-gray-400');
+            saveBtn.classList.add('bg-green-500');
+
+            modal.classList.remove('hidden'); // Use remove('hidden') for Tailwind
+        }
+
+        function openEditModal(cam) {
+            isEditMode = true;
+            currentEditId = cam.id;
+            title.innerText = "Edit Camera";
+
+            // Populate fields
+            document.getElementById('cameraName').value = cam.name;
+            document.getElementById('cameraIp').value = cam.ip;
+            document.getElementById('cameraZone').value = cam.zone;
+
+            // "Edit" mode: initially locked
+            setInputsEditable(false);
+            unlockBtn.classList.remove('hidden');
+            updateUnlockBtnUI(false); // Show "Lock" icon state (locked)
+
+            // Save button disabled until unlocked
+            saveBtn.disabled = true;
+            saveBtn.classList.remove('bg-green-500');
+            saveBtn.classList.add('bg-gray-400');
+
+            modal.classList.remove('hidden'); // Use remove('hidden') for Tailwind
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden'); // Use add('hidden') for Tailwind
+        }
+
+        function setInputsEditable(editable) {
+            const inputs = document.querySelectorAll('#cameraForm input');
+            inputs.forEach(input => {
+                input.disabled = !editable;
+                if (!editable) {
+                    input.classList.add('bg-gray-100');
+                } else {
+                    input.classList.remove('bg-gray-100');
+                }
+            });
+        }
+
+        function toggleEditMode() {
+            // Check current state by checking one input
+            const input = document.getElementById('cameraName');
+            const isCurrentlyDisabled = input.disabled;
+
+            if (isCurrentlyDisabled) {
+                // Unlock
+                setInputsEditable(true);
+                updateUnlockBtnUI(true);
+                saveBtn.disabled = false;
+                saveBtn.classList.remove('bg-gray-400');
+                saveBtn.classList.add('bg-green-500');
+            } else {
+                // Lock
+                setInputsEditable(false);
+                updateUnlockBtnUI(false);
+                saveBtn.disabled = true;
+                saveBtn.classList.remove('bg-green-500');
+                saveBtn.classList.add('bg-gray-400');
+            }
+        }
+
+        function updateUnlockBtnUI(unlocked) {
+            if (unlocked) {
+                unlockBtn.innerHTML = '<i class="fas fa-unlock"></i> Editing Enabled';
+                unlockBtn.classList.remove('text-blue-500');
+                unlockBtn.classList.add('text-green-500');
+            } else {
+                unlockBtn.innerHTML = '<i class="fas fa-lock"></i> Enable Editing';
+                unlockBtn.classList.add('text-blue-500');
+                unlockBtn.classList.remove('text-green-500');
+            }
+        }
+
+        // Form Submit
+        document.getElementById('cameraForm').onsubmit = async (e) => {
+            e.preventDefault();
+
+            const data = {
+                name: document.getElementById('cameraName').value,
+                ip: document.getElementById('cameraIp').value,
+                zone: document.getElementById('cameraZone').value,
+                status: true // Default status
+            };
+
+            try {
+                let response;
+                if (isEditMode) {
+                    response = await fetch(`${API_URL}/${currentEditId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                } else {
+                    response = await fetch(API_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                }
+
+                if (response.ok) {
+                    closeModal();
+                    fetchCameras();
+                } else {
+                    alert('Failed to save camera');
+                }
+            } catch (error) {
+                console.error('Error saving camera:', error);
+            }
+        };
+
+        // Delete Logic
+        async function confirmDelete(id) {
+            const input = prompt('Please type "DELETE" (all caps) to confirm deletion:');
+            if (input === 'DELETE') {
+                try {
+                    const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+                    if (response.ok) fetchCameras();
+                } catch (error) {
+                    console.error('Error deleting camera:', error);
+                }
+            } else if (input !== null) {
+                alert('Incorrect confirmation text.');
+            }
+        }
+
+        // Bulk Delete (Similar logic)
+        async function deleteCheckedCameras() {
+            const checkboxes = document.querySelectorAll('.camera-checkbox:checked');
+            if (checkboxes.length === 0) {
+                alert('No cameras selected');
+                return;
+            }
+
+            const input = prompt(`Deleting ${checkboxes.length} cameras. Type "DELETE" to confirm:`);
+            if (input === 'DELETE') {
+                // Deleting sequentially or Promise.all
+                const ids = Array.from(checkboxes).map(c => c.value);
+                await Promise.all(ids.map(id => fetch(`${API_URL}/${id}`, { method: 'DELETE' })));
+                fetchCameras();
+            } else if (input !== null) {
+                alert('Incorrect confirmation text.');
+            }
+        }
+
+    </script>
+</body>
+
+</html>

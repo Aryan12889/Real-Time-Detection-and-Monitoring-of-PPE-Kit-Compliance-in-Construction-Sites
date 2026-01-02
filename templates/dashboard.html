@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PPE Kit Detection Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 ">
+    <!-- Sidebar -->
+    <div class="w-full h-17 flex bg-gray-400 text-black p-5 ml-5 rounded-lg">
+        <!-- <img alt="EFRAME Logo" class="w-full h-auto mb-5 rounded-lg" src="eframe-logo.png"> -->
+        <ul class="flex space-x-5">
+            <li class="hover:bg-black hover:text-white p-2 rounded-lg group">
+                <a class="flex items-center" href="dashboard.html">
+                    <i class="fas fa-tachometer-alt mr-3"></i>
+                    <span
+                        class="absolute left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-s bg-black text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                        Dashboard
+                    </span>
+                </a>
+            </li>
+            <li class="hover:bg-black hover:text-white p-2 rounded-lg group">
+                <a class="flex items-center" href="employee_config.html">
+                    <i class="fas fa-users mr-3"></i>
+                    <span
+                        class="absolute left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-s bg-black text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                        Employee Configuration
+                    </span>
+                </a>
+            </li>
+            <!-- <li class="hover:bg-black hover:text-white p-2 rounded-lg group">
+                <a class="flex items-center" href="model_management.html">
+                    <i class="fas fa-cogs mr-3"></i> 
+                    <span class="absolute left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-s bg-black text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                        Model Management
+                    </span>
+                </a>
+            </li> -->
+            <!-- <li class="hover:bg-black hover:text-white p-2 rounded-lg">
+                <a class="flex items-center" href="model_mapping.html">
+                    <i class="fas fa-cube mr-3"></i> Model Mapping
+                </a>
+            </li> -->
+            <li class="hover:bg-black hover:text-white p-2 rounded-lg group">
+                <a class="flex items-center" href="camera_management.html">
+                    <i class="fas fa-video mr-3"></i>
+                    <span
+                        class="absolute left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-s bg-black text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                        Camera Management
+                    </span>
+                </a>
+            </li>
+            <li class="hover:bg-black hover:text-white p-2 rounded-lg group">
+                <a class="flex items-center" href="camera_dashboard.html">
+                    <i class="fas fa-camera mr-3"></i>
+                    <span
+                        class="absolute left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-s bg-black text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                        Camera Dashboard
+                    </span>
+                </a>
+            </li>
+            <li class="hover:bg-black hover:text-white p-2 rounded-lg group">
+                <a class="flex items-center" href="notifications.html">
+                    <i class="fas fa-bell mr-3"></i>
+                    <span
+                        class="absolute left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-s bg-black text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                        Notifications
+                    </span>
+                </a>
+            </li>
+            <!-- <li class="hover:bg-black hover:text-white p-2 rounded-lg group">
+                <a class="flex items-center" href="settings.html">
+                    <i class="fas fa-cog mr-3"></i> 
+                    <span class="absolute left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-s bg-black text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                        Settings
+                    </span>
+                </a>
+            </li> -->
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-grow bg-white p-5 rounded-lg ml-5">
+        <div class="flex justify-between items-center bg-gray-400 text-black p-3 rounded-lg">
+            <h1 class="text-xl">Dashboard</h1>
+            <div class="flex items-center">
+                <span>Super Admin</span>
+                <a href="/profile">
+                    <img alt="User profile picture" class="ml-3 rounded-full w-10 h-10"
+                        src="https://placehold.co/40x40">
+                </a>
+            </div>
+        </div>
+        <div class="w-full bg-white p-5 rounded-lg shadow-lg mt-5">
+            <h2 class="text-lg mb-2">Welcome to the Dashboard</h2>
+            <p class="text-sm text-gray-600">This is the dashboard content area. You can add widgets or dynamic content
+                here.</p>
+        </div>
+    </div>
+</body>
+
+</html>

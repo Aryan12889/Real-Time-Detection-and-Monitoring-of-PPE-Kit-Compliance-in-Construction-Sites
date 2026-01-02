@@ -1,0 +1,56 @@
+[
+    {
+        "id": 1,
+        "name": "Zone 1",
+        "ip": "192.168.0.6",
+        "rtsp_url": "rtsp://192.168.0.6/stream1",
+        "playback_url": "playback/zone1.mp4",
+        "zone": "Zone 1",
+        "status": true
+    },
+    {
+        "id": 2,
+        "name": "Zone 2",
+        "ip": "192.168.0.4",
+        "rtsp_url": "rtsp://192.168.0.4/stream2",
+        "playback_url": "playback/zone2.mp4",
+        "zone": "Zone 2",
+        "status": true
+    },
+    {
+        "id": 3,
+        "name": "Zone 3",
+        "ip": "192.168.0.5",
+        "rtsp_url": "rtsp://192.168.0.5/stream3",
+        "playback_url": "playback/zone3.mp4",
+        "zone": "Zone 3",
+        "status": true
+    },
+    {
+        "id": 4,
+        "name": "Zone 4",
+        "ip": "192.168.0.3",
+        "rtsp_url": "rtsp://192.168.0.3/stream4",
+        "playback_url": "playback/zone4.mp4",
+        "zone": "Zone 4",
+        "status": true
+    },
+    {
+        "id": 5,
+        "name": "Zone 5",
+        "ip": "192.168.0.2",
+        "rtsp_url": "rtsp://192.168.0.2/stream5",
+        "playback_url": "playback/zone5.mp4",
+        "zone": "Zone 5",
+        "status": true
+    },
+    {
+        "id": 6,
+        "name": "Zone 6",
+        "ip": "192.168.0.1",
+        "rtsp_url": "rtsp://192.168.0.1/stream6",
+        "playback_url": "playback/zone6.mp4",
+        "zone": "Zone 6",
+        "status": true
+    }
+]

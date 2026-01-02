@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>PPE Kit Detection Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 ">
+  <!-- Sidebar -->
+  <div class="w-full h-17 flex bg-gray-400 text-black p-5 ml-5 rounded-lg">
+    <!-- <img alt="EFRAME Logo" class="w-full h-auto mb-5 rounded-lg" src="eframe-logo.png"> -->
+    <ul class="flex space-x-5">
+      <li class="hover:bg-black hover:text-white p-2 rounded-lg group">
+        <a class="flex items-center" href="dashboard.html">
+          <i class="fas fa-tachometer-alt mr-3"></i>
+          <span
+            class="absolute left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-s bg-black text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+            Dashboard
+          </span>
+        </a>
+      </li>
+      <li class="hover:bg-black hover:text-white p-2 rounded-lg group">
+        <a class="flex items-center" href="employee_config.html">
+          <i class="fas fa-users mr-3"></i>
+          <span
+            class="absolute left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-s bg-black text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+            Employee Configuration
+          </span>
+        </a>
+      </li>
+      <li class="hover:bg-black hover:text-white p-2 rounded-lg group">
+        <a class="flex items-center" href="camera_management.html">
+          <i class="fas fa-video mr-3"></i>
+          <span
+            class="absolute left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-s bg-black text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+            Camera Management
+          </span>
+        </a>
+      </li>
+      <li class="hover:bg-black hover:text-white p-2 rounded-lg group">
+        <a class="flex items-center" href="camera_dashboard.html">
+          <i class="fas fa-camera mr-3"></i>
+          <span
+            class="absolute left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-s bg-black text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+            Camera Dashboard
+          </span>
+        </a>
+      </li>
+      <li class="hover:bg-black hover:text-white p-2 rounded-lg group">
+        <a class="flex items-center" href="notifications.html">
+          <i class="fas fa-bell mr-3"></i>
+          <span
+            class="absolute left-1/2 transform -translate-x-1/2 mt-2 px-2 py-1 text-s bg-black text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
+            Notifications
+          </span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-grow bg-white p-5 rounded-lg ml-5">
+    <div class="flex justify-between items-center bg-gray-400 text-black p-3 rounded-lg">
+      <h1 class="text-xl">Notifications</h1>
+      <div class="flex items-center">
+        <span>Super Admin</span>
+        <a href="{{ url_for('profile') }}">
+          <img class="ml-3 rounded-full w-10 h-10" src="https://placehold.co/40x40" alt="User profile picture" />
+        </a>
+      </div>
+    </div>
+
+
+    <!--Log Display Section-->
+    <div class="bg-white shadow p-4 rounded-lg">
+      <h2 class="text-xl font-bold mb-4">📋 Latest Detection Logs</h2>
+      <div class="overflow-auto">
+        <table id="logTable" class="min-w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-gray-200 text-sm">
+              <th class="p-2 border">Timestamp</th>
+              <th class="p-2 border">Persons</th>
+              <th class="p-2 border">Helmets</th>
+              <th class="p-2 border">Harnesses</th>
+              <th class="p-2 border">Inference Time (ms)</th>
+            </tr>
+          </thead>
+          <tbody class="text-sm text-gray-700"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="flex justify-center items-center mt-6 p-4">
+      <div id="paginationContainer" class="flex space-x-2">
+        <!-- Pagination buttons will be injected here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- JS to Fetch Logs -->
+  <script>
+    let currentPage = 1;
+    const limit = 50;
+    let totalLogs = 0;
+    let totalPages = 1;
+
+    async function fetchLogs(page = 1) {
+      try {
+        const response = await fetch(`/logs?page=${page}&limit=${limit}`);
+        const data = await response.json();
+        const tbody = document.querySelector("#logTable tbody");
+        tbody.innerHTML = '';
+
+        if (data.logs.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center">No logs found</td></tr>';
+        } else {
+          data.logs.forEach(log => {
+            const row = `
+            <tr>
+              <td class="border p-2">${log.timestamp}</td>
+              <td class="border p-2">${log.persons}</td>
+              <td class="border p-2">${log.helmets}</td>
+              <td class="border p-2">${log.harnesses}</td>
+              <td class="border p-2">${log.inference_time}</td>
+            </tr>
+          `;
+            tbody.innerHTML += row;
+          });
+        }
+
+        currentPage = data.current_page;
+        totalLogs = data.total_logs;
+        totalPages = data.total_pages || 1;
+
+        renderPagination();
+
+      } catch (error) {
+        console.error("Error fetching logs:", error);
+      }
+    }
+
+    function renderPagination() {
+      const container = document.getElementById('paginationContainer');
+      container.innerHTML = '';
+
+      // Previous Button
+      const prevBtn = document.createElement('button');
+      prevBtn.innerHTML = '<i class="fas fa-arrow-left mr-1"></i> Prev';
+      prevBtn.className = "px-3 py-1 border rounded font-bold bg-gray-300 hover:bg-gray-400 text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed mr-2";
+      prevBtn.disabled = currentPage <= 1;
+      prevBtn.onclick = () => fetchLogs(currentPage - 1);
+      container.appendChild(prevBtn);
+
+      const pages = getPaginationItems(currentPage, totalPages);
+
+      pages.forEach(item => {
+        const btn = document.createElement('button');
+
+        if (item === '...') {
+          btn.innerText = '...';
+          btn.className = "px-3 py-1 border rounded text-gray-500 cursor-default";
+          btn.disabled = true;
+        } else {
+          btn.innerText = item;
+          const isActive = item === currentPage;
+          btn.className = `px-3 py-1 border rounded font-semibold transition-colors duration-200 ${isActive
+            ? "bg-black text-white border-black"
+            : "bg-white text-gray-700 border-gray-300 hover:bg-gray-200"
+            }`;
+          btn.onclick = () => {
+            if (!isActive) fetchLogs(item);
+          };
+        }
+        container.appendChild(btn);
+      });
+
+      // Next Button
+      const nextBtn = document.createElement('button');
+      nextBtn.innerHTML = 'Next <i class="fas fa-arrow-right ml-1"></i>';
+      nextBtn.className = "px-3 py-1 border rounded font-bold bg-gray-300 hover:bg-gray-400 text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed ml-2";
+      nextBtn.disabled = currentPage >= totalPages;
+      nextBtn.onclick = () => fetchLogs(currentPage + 1);
+      container.appendChild(nextBtn);
+    }
+
+    function getPaginationItems(current, total) {
+      if (total <= 1) return [1];
+
+      if (current === 1) {
+        if (total <= 4) return Array.from({ length: total }, (_, i) => i + 1);
+        return [1, 2, '...', total - 1, total];
+      }
+
+      const items = [1];
+      const prev = current - 1;
+      const next = current + 1;
+
+      if (prev > 2) items.push('...');
+      if (prev > 1) items.push(prev);
+
+      if (current !== 1 && current !== total) items.push(current);
+
+      if (next < total) items.push(next);
+      if (next < total - 1) items.push('...');
+
+      if (total > 1) items.push(total);
+
+      return items;
+    }
+
+    fetchLogs(currentPage);
+    setInterval(() => fetchLogs(currentPage), 10000); 
+  </script>
+
+</body>
+
+</html>
