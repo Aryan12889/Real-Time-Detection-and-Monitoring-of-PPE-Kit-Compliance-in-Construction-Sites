@@ -4,6 +4,9 @@ An advanced computer vision dashboard for monitoring Personal Protective Equipme
 
 This project is a part of the final project required for passing the degree at SRM University. The submission of this project is mandatory and is required to be submitted by the end of the academic year. The code base was submitted via ZIP file to the panel members in May of 2025.
 
+## Technical Documentation
+For a detailed analysis of the system architecture, methodology, and compliance standards, please refer to the [PPE Compliance Technical Report SRMIST 2025](PPE%20Compliance%20Technical%20Report%20SRMIST%202025.pdf) included in this repository.
+
 ## Features
 
 -   **Dashboard Overview**: Real-time monitoring of camera feeds with detection status.
